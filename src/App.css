@@ -1,0 +1,46 @@
+.App {
+  min-height: 50%;
+  display: flex;
+  justify-content: center;
+  padding-top: 100px;
+}
+
+.form-container {
+  min-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signin-form {
+  padding: 50px 25px;
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.text-field {
+  width: 100%;
+  margin-bottom: 20px !important;
+}
+
+.btn-container {
+  width: 100%;
+  display: flex;
+  margin-top: 30px;
+}
+
+.btn-container .btn {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.btn-container .btn:last-child {
+  margin-right: revert;
+}
+
+.tab-container {
+  margin-bottom: 30px;
+  border-bottom: 1px solid #efefef;
+}
