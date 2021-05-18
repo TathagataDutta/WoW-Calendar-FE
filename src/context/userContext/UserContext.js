@@ -2,6 +2,7 @@ import React, {useContext, useReducer} from "react";
 import {useHistory} from 'react-router-dom';
 import userReducer from "./userReducer";
 import axios from 'axios'
+import {WOW_BASE_URL} from "../../util/StringUtil";
 
 const initState = {
     user: null,
@@ -17,21 +18,18 @@ const UserProvider = ({children}) => {
     const [state, dispatch] = useReducer(userReducer, initState);
 
     const login = async (user) => {
-        await axios.post("http://127.0.0.1:8080/user_login/", {user_id: user.userName, user_pw: user.password}).then(res=>{
-            console.log(res.data.status)
-            if (res.data.status === 'success') {
-                console.log("If part a print korlam 1")
+        const mockUrl = 'https://jsonplaceholder.typicode.com/users/1';
+        const reqBody = {user_id: user.userName, user_pw: user.password};
+        return await axios.get(mockUrl).then(res=>{
+            console.log(res.data.username)
+            if (res.data.username === 'Bret') {
                 dispatch({type: 'LOGIN', payload: user});
-                console.log("If part a print korlam 2")
-                return true;
-            }
-            else{
+                return Promise.resolve(true);
+            } else {
                 console.log("Else part a print korlam")
-                return false;
+                return Promise.resolve(false);
             }
         })
-        // return false;
-        console.log("axios er baire")
     }
 
     const logout = () => {

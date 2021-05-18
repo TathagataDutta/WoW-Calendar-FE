@@ -1,0 +1,1 @@
+export const WOW_BASE_URL = 'https://wc-be-test.appspot.com/';
