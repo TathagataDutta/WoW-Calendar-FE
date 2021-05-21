@@ -23,9 +23,11 @@ const AuthComponent = () => {
     const [color] = useState('primary');
     const [value, setValue] = useState(0);
     const history = useHistory();
-    const {login, user} = useUserContext();
+    const {login, user, signup} = useUserContext();
 
     const [open, setOpen] = useState(false);
+
+    const [isLoading, setLoading] = useState(false);
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -41,8 +43,15 @@ const AuthComponent = () => {
 
     const handleAuthentication = (e) => {
         e.preventDefault();
+        value === 0 ? handleLogin() : handleSignup()
+
+    }
+
+    const handleLogin = () => {
+        setLoading(true);
         if (!!userName && !!password && userName !== '' && password !== '') {
             login({userName, password}).then(res => {
+                setLoading(false)
                 if (!!res) {
                     history.push('/home');
                 } else {
@@ -50,8 +59,20 @@ const AuthComponent = () => {
                 }
             });
         }
-
     }
+
+    const handleSignup = () => {
+        setLoading(true);
+        if (!!userName && !!password && userName !== '' && password !== '') {
+            signup({userName, password}).then(res => {
+                setLoading(false)
+                history.push('/home');
+
+            });
+        }
+    }
+
+
 
     return (
 
@@ -90,7 +111,10 @@ const AuthComponent = () => {
 
                             <div className="btn-container">
                                 <Button className='btn' variant="contained" color={color} type="submit">
-                                    {value === 0 ? 'Log in' : 'Sign up'}
+                                    {value === 0 ?
+                                        (!!isLoading ? <><i className="fa fa-spinner fa-spin"/> <span style={{marginLeft: '5px'}}>Logging in...</span></> : 'Log in') :
+                                        (!!isLoading ? <><i className="fa fa-spinner fa-spin"/> <span style={{marginLeft: '5px'}}>Signing up...</span></> : 'Sign up')
+                                    }
                                 </Button>
                             </div>
 

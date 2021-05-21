@@ -2,7 +2,7 @@ import React, {useContext, useReducer} from "react";
 import {useHistory} from 'react-router-dom';
 import userReducer from "./userReducer";
 import axios from 'axios'
-import {WOW_BASE_URL} from "../../util/StringUtil";
+import {LOGIN, SIGNUP, SUCCESS, WOW_BASE_URL, WOW_LOGIN_URL, WOW_SIGNUP_URL} from "../../util/StringUtil";
 
 const initState = {
     user: null,
@@ -18,15 +18,26 @@ const UserProvider = ({children}) => {
     const [state, dispatch] = useReducer(userReducer, initState);
 
     const login = async (user) => {
-        const mockUrl = 'https://jsonplaceholder.typicode.com/users/1';
         const reqBody = {user_id: user.userName, user_pw: user.password};
-        return await axios.get(mockUrl).then(res=>{
-            console.log(res.data.username)
-            if (res.data.username === 'Bret') {
-                dispatch({type: 'LOGIN', payload: user});
+        return await axios.post(WOW_BASE_URL+WOW_LOGIN_URL, reqBody).then(res=>{
+            console.log(res.data)
+            if (res.data.status === SUCCESS) {
+                dispatch({type: LOGIN, payload: user});
                 return Promise.resolve(true);
             } else {
-                console.log("Else part a print korlam")
+                return Promise.resolve(false);
+            }
+        })
+    }
+
+    const signup = async (user) => {
+        const reqBody = {user_id: user.userName, user_pw: user.password};
+        return await axios.post(WOW_BASE_URL+WOW_SIGNUP_URL, reqBody).then(res=>{
+            console.log(res.data)
+            if (res.data.status === SUCCESS) {
+                dispatch({type: SIGNUP, payload: user});
+                return Promise.resolve(true);
+            } else {
                 return Promise.resolve(false);
             }
         })
@@ -41,7 +52,8 @@ const UserProvider = ({children}) => {
         value={{
             ...state,
             login,
-            logout
+            logout,
+            signup
         }}
         >{children}</UserContext.Provider>
     )
