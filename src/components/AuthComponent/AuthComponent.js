@@ -110,7 +110,7 @@ const AuthComponent = () => {
                                 onChange={e => setPassword(e.target.value)} />
 
                             <div className="btn-container">
-                                <Button className='btn' variant="contained" color={color} type="submit">
+                                <Button className='btn' variant="contained" color={color} type="submit" disabled={!!isLoading}>
                                     {value === 0 ?
                                         (!!isLoading ? <><i className="fa fa-spinner fa-spin"/> <span style={{marginLeft: '5px'}}>Logging in...</span></> : 'Log in') :
                                         (!!isLoading ? <><i className="fa fa-spinner fa-spin"/> <span style={{marginLeft: '5px'}}>Signing up...</span></> : 'Sign up')

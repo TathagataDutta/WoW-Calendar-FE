@@ -6,7 +6,7 @@ import {useUserContext} from "./context/userContext/UserContext";
 
 
 
-function App() {
+const App = () => {
 
     const {user} = useUserContext();
 

@@ -19,10 +19,10 @@ const UserProvider = ({children}) => {
 
     const login = async (user) => {
         const reqBody = {user_id: user.userName, user_pw: user.password};
-        return await axios.post(WOW_BASE_URL+WOW_LOGIN_URL, reqBody).then(res=>{
+        return await axios.post(WOW_LOGIN_URL, reqBody).then(res=>{
             console.log(res.data)
             if (res.data.status === SUCCESS) {
-                dispatch({type: LOGIN, payload: user});
+                dispatch({type: LOGIN, payload: JSON.parse(res.data.data)});
                 return Promise.resolve(true);
             } else {
                 return Promise.resolve(false);
@@ -32,10 +32,10 @@ const UserProvider = ({children}) => {
 
     const signup = async (user) => {
         const reqBody = {user_id: user.userName, user_pw: user.password};
-        return await axios.post(WOW_BASE_URL+WOW_SIGNUP_URL, reqBody).then(res=>{
+        return await axios.post(WOW_SIGNUP_URL, reqBody).then(res=>{
             console.log(res.data)
             if (res.data.status === SUCCESS) {
-                dispatch({type: SIGNUP, payload: user});
+                dispatch({type: SIGNUP, payload: JSON.parse(res.data.data)});
                 return Promise.resolve(true);
             } else {
                 return Promise.resolve(false);
