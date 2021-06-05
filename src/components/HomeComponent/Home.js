@@ -63,18 +63,16 @@ const Home = () => {
     }
 
     useEffect(() => {
-        console.log('calling raids')
         setOpenLoaderBackDrop(true)
         axios.get(WOW_GET_RAIDS_URL + user.user_id).then(res => {
-            console.log(res.data)
             setRows(res.data);
         }).finally(() => {
             setOpenLoaderBackDrop(false)
         })
-    }, [openModal]);
+    }, [raidSubmitLoading]);
 
     return (
-        <div style={{background: '#fefefe'}}>
+        <div>
             <AppBar position="fixed">
                 <Toolbar>
                     <Typography variant="h6" className={classes.title}>
@@ -87,7 +85,7 @@ const Home = () => {
                 <CircularProgress color="inherit" />
             </Backdrop>
             <div style={{padding: '100px'}}>
-                <Button color="primary" variant='contained' onClick={handleClickOpen}>Add Raids</Button>
+                <Button color="primary" style={{marginBottom: '40px'}} variant='contained' onClick={handleClickOpen}>Add Raid</Button>
                 <EnhancedTable user={user} rows={rows}/>
             </div>
 

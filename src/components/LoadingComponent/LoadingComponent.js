@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 const LoadingComponent = () => {
 
     const classes = useStyles();
-    const {user, addUser} = useUserContext();
+    const {addUser} = useUserContext();
     const history = useHistory();
 
     useEffect(() => {

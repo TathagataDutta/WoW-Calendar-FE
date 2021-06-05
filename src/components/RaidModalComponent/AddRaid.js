@@ -4,10 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import axios from "axios";
-import {WOW_RAID_ADD_URL} from "../../util/StringUtil";
 import {MenuItem, Select} from "@material-ui/core";
 
 const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading}) => {
@@ -69,7 +66,7 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
                     <TextField
                         className='text-field'
                         id="datetime-local"
-                        label="Next appointment"
+                        label="Raid Start Time"
                         type="datetime-local"
                         defaultValue={new Date().toISOString()}
                         InputLabelProps={{

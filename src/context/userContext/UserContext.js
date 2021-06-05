@@ -1,8 +1,7 @@
 import React, {useContext, useReducer} from "react";
-import {useHistory} from 'react-router-dom';
 import userReducer from "./userReducer";
 import axios from 'axios'
-import {ADD_USER, SUCCESS, USER_DATA, WOW_BASE_URL, WOW_LOGIN_URL, WOW_SIGNUP_URL} from "../../util/StringUtil";
+import {ADD_USER, SUCCESS, USER_DATA, WOW_LOGIN_URL, WOW_SIGNUP_URL} from "../../util/StringUtil";
 
 const initState = {
     user: null,
@@ -13,7 +12,6 @@ const initState = {
 const UserContext = React.createContext();
 
 const UserProvider = ({children}) => {
-    const history = useHistory();
 
     const [state, dispatch] = useReducer(userReducer, initState);
 
@@ -53,9 +51,7 @@ const UserProvider = ({children}) => {
     }
 
     const addUser = async (userData) => {
-        console.log('ADD user calling', userData)
         dispatch({type: ADD_USER, payload: userData});
-        console.log(state.user);
         return Promise.resolve(true);
     }
 

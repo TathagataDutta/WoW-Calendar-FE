@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -16,13 +16,10 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import axios from "axios";
-import {WOW_GET_RAIDS_URL} from "../../util/StringUtil";
 import {displayTime} from "../../util/CommonUtil";
+import {withStyles} from "@material-ui/core";
 
 function createData(
     char_name,
@@ -88,9 +85,17 @@ const headCells = [
     { id: 'raid_name', numeric: true, disablePadding: false, label: 'Raid Name' },
     { id: 'guild_or_discord_name', numeric: true, disablePadding: false, label: 'Guild/Discord Name' },
     { id: 'start_date_and_time', numeric: true, disablePadding: false, label: 'Start Time' },
-    { id: 'approx_duration', numeric: true, disablePadding: false, label: 'Duration (approx.)' },
+    { id: 'approx_duration', numeric: true, disablePadding: false, label: 'Duration (approx.) (Hr.)' },
     { id: 'approx_end', numeric: true, disablePadding: false, label: 'End Time (Approx)' },
 ];
+
+const StyledTableRow = withStyles((theme) => ({
+    root: {
+        '&:nth-of-type(odd)': {
+            backgroundColor: theme.palette.action.hover,
+        },
+    },
+}))(TableRow);
 
 function EnhancedTableHead(props) {
     const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
@@ -111,6 +116,7 @@ function EnhancedTableHead(props) {
                 </TableCell>
                 {headCells.map((headCell) => (
                     <TableCell
+                        style={{fontWeight: "bold"}}
                         key={headCell.id}
                         align={headCell.numeric ? 'right' : 'left'}
                         padding={headCell.disablePadding ? 'none' : 'default'}
@@ -167,7 +173,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
     const classes = useToolbarStyles();
-    const { numSelected } = props;
+    const { numSelected, rows } = props;
 
     return (
         <Toolbar
@@ -187,7 +193,7 @@ const EnhancedTableToolbar = (props) => {
 
             {numSelected > 0 ? (
                 <Tooltip title="Delete">
-                    <IconButton aria-label="delete">
+                    <IconButton aria-label="delete" onClick={() => console.log(rows)}>
                         <DeleteIcon />
                     </IconButton>
                 </Tooltip>
@@ -237,7 +243,7 @@ export default function EnhancedTable({user, rows}) {
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
 
 
@@ -257,12 +263,12 @@ export default function EnhancedTable({user, rows}) {
         setSelected([]);
     };
 
-    const handleClick = (event, name) => {
-        const selectedIndex = selected.indexOf(name);
+    const handleClick = (event, row) => {
+        const selectedIndex = selected.indexOf(row.char_name);
         let newSelected = [];
 
         if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, name);
+            newSelected = newSelected.concat(selected, row.char_name);
         } else if (selectedIndex === 0) {
             newSelected = newSelected.concat(selected.slice(1));
         } else if (selectedIndex === selected.length - 1) {
@@ -273,7 +279,7 @@ export default function EnhancedTable({user, rows}) {
                 selected.slice(selectedIndex + 1),
             );
         }
-
+        console.log(row)
         setSelected(newSelected);
     };
 
@@ -297,7 +303,7 @@ export default function EnhancedTable({user, rows}) {
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
-                <EnhancedTableToolbar numSelected={selected.length} />
+                <EnhancedTableToolbar numSelected={selected.length} rows={selected}  />
                 <TableContainer>
                     <Table
                         className={classes.table}
@@ -322,9 +328,9 @@ export default function EnhancedTable({user, rows}) {
                                     const labelId = `enhanced-table-checkbox-${index}`;
 
                                     return (
-                                        <TableRow
+                                        <StyledTableRow
                                             hover
-                                            onClick={(event) => handleClick(event, row.char_name)}
+                                            onClick={(event) => handleClick(event, row)}
                                             role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
@@ -343,9 +349,9 @@ export default function EnhancedTable({user, rows}) {
                                             <TableCell align="right">{row.raid_name}</TableCell>
                                             <TableCell align="right">{row.guild_or_discord_name}</TableCell>
                                             <TableCell align="right">{displayTime(row.start_date_and_time)}</TableCell>
-                                            <TableCell align="right">{row.approx_duration}</TableCell>
+                                            <TableCell align="right">{row.approx_duration.slice(0, -3)}</TableCell>
                                             <TableCell align="right">{displayTime(row.approx_end)}</TableCell>
-                                        </TableRow>
+                                        </StyledTableRow>
                                     );
                                 })}
                             {emptyRows > 0 && (
@@ -357,7 +363,7 @@ export default function EnhancedTable({user, rows}) {
                     </Table>
                 </TableContainer>
                 <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
+                    rowsPerPageOptions={[10, 20, 30]}
                     component="div"
                     count={rows.length}
                     rowsPerPage={rowsPerPage}

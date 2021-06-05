@@ -5,8 +5,6 @@ import Home from "./components/HomeComponent/Home";
 import {useUserContext} from "./context/userContext/UserContext";
 import LoadingComponent from "./components/LoadingComponent/LoadingComponent";
 
-
-
 const App = () => {
 
     const {user} = useUserContext();
