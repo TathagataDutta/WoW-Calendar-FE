@@ -13,13 +13,13 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import {displayTime} from "../../util/CommonUtil";
 import {withStyles} from "@material-ui/core";
+import AlertComponent from "../Alert/AlertComponent";
 
 function createData(
     char_name,
@@ -81,7 +81,7 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-    { id: 'char_name', numeric: false, disablePadding: true, label: 'Character Name' },
+    { id: 'char_name', numeric: false, disablePadding: false, label: 'Character Name' },
     { id: 'raid_name', numeric: true, disablePadding: false, label: 'Raid Name' },
     { id: 'guild_or_discord_name', numeric: true, disablePadding: false, label: 'Guild/Discord Name' },
     { id: 'start_date_and_time', numeric: true, disablePadding: false, label: 'Start Time' },
@@ -106,14 +106,14 @@ function EnhancedTableHead(props) {
     return (
         <TableHead>
             <TableRow>
-                <TableCell padding="checkbox">
+                {/*<TableCell padding="checkbox">
                     <Checkbox
                         indeterminate={numSelected > 0 && numSelected < rowCount}
                         checked={rowCount > 0 && numSelected === rowCount}
                         onChange={onSelectAllClick}
                         inputProps={{ 'aria-label': 'select all desserts' }}
                     />
-                </TableCell>
+                </TableCell>*/}
                 {headCells.map((headCell) => (
                     <TableCell
                         style={{fontWeight: "bold"}}
@@ -191,7 +191,7 @@ const EnhancedTableToolbar = (props) => {
                 </Typography>
             )}
 
-            {numSelected > 0 ? (
+            {/*{numSelected > 0 ? (
                 <Tooltip title="Delete">
                     <IconButton aria-label="delete" onClick={() => console.log(rows)}>
                         <DeleteIcon />
@@ -203,7 +203,7 @@ const EnhancedTableToolbar = (props) => {
                         <FilterListIcon />
                     </IconButton>
                 </Tooltip>
-            )}
+            )}*/}
         </Toolbar>
     );
 };
@@ -236,7 +236,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function EnhancedTable({user, rows}) {
+export default function EnhancedTable({user, rows, setRows}) {
     const classes = useStyles();
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
@@ -244,7 +244,9 @@ export default function EnhancedTable({user, rows}) {
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+    const [openAlert, setOpenAlert] = React.useState(false);
+    const [rowToBeDeleted, setRowToBeDeleted] = React.useState(null);
+    const [alertBackDrop, setAlertBackDrop] = React.useState(false);
 
 
 
@@ -330,20 +332,20 @@ export default function EnhancedTable({user, rows}) {
                                     return (
                                         <StyledTableRow
                                             hover
-                                            onClick={(event) => handleClick(event, row)}
+                                            onClick={(event) => {/*handleClick(event, row)*/}}
                                             role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
                                             key={row.char_name}
                                             selected={isItemSelected}
                                         >
-                                            <TableCell padding="checkbox">
+                                            {/*<TableCell padding="checkbox">
                                                 <Checkbox
                                                     checked={isItemSelected}
                                                     inputProps={{ 'aria-labelledby': labelId }}
                                                 />
-                                            </TableCell>
-                                            <TableCell component="th" id={labelId} scope="row" padding="none">
+                                            </TableCell>*/}
+                                            <TableCell component="th" id={labelId} scope="row" >
                                                 {row.char_name}
                                             </TableCell>
                                             <TableCell align="right">{row.raid_name}</TableCell>
@@ -351,6 +353,14 @@ export default function EnhancedTable({user, rows}) {
                                             <TableCell align="right">{displayTime(row.start_date_and_time)}</TableCell>
                                             <TableCell align="right">{row.approx_duration.slice(0, -3)}</TableCell>
                                             <TableCell align="right">{displayTime(row.approx_end)}</TableCell>
+                                            <TableCell align="right">
+                                                <IconButton size='small' aria-label="delete" color='secondary' onClick={() => {
+                                                    setRowToBeDeleted(row)
+                                                    setOpenAlert(true)
+                                                }}>
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </TableCell>
                                         </StyledTableRow>
                                     );
                                 })}
@@ -372,6 +382,24 @@ export default function EnhancedTable({user, rows}) {
                     onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
             </Paper>
+            <AlertComponent open={openAlert}
+                            msg={`Do you want to delete the raid: ${rowToBeDeleted?.raid_name} ?`}
+                            openBackDrop={alertBackDrop}
+                            setOpen={setOpenAlert} handleAction={(e) => {
+                console.log(e, rowToBeDeleted)
+                setAlertBackDrop(true)
+
+                if (!!e) {
+                    setTimeout(() => {
+                        setOpenAlert(false)
+                        setAlertBackDrop(false)
+                        setRows([...rows.filter(row => row.raid_name !== rowToBeDeleted.raid_name)])
+                    }, 3000)
+                } else {
+                    setOpenAlert(false)
+                    setAlertBackDrop(false)
+                }
+            }} />
         </div>
     );
 }

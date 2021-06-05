@@ -91,7 +91,7 @@ const Home = () => {
             <BackdropComponent isOpen={openLoaderBackdrop} />
             <div style={{padding: '100px'}}>
                 <Button color="primary" style={{marginBottom: '40px'}} variant='contained' onClick={handleClickOpen}>Add Raid</Button>
-                <EnhancedTable user={user} rows={rows}/>
+                <EnhancedTable user={user} rows={rows} setRows={setRows}/>
             </div>
 
             <AddRaid
