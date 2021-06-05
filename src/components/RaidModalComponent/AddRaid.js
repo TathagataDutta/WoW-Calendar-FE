@@ -8,6 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from "axios";
 import {WOW_RAID_ADD_URL} from "../../util/StringUtil";
+import {MenuItem, Select} from "@material-ui/core";
 
 const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading}) => {
 
@@ -16,7 +17,8 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
     const [raid_name, setRaidName] = useState('');
     const [guild_name, setGuildName] = useState('');
     const [start_date_and_time, setStartTime] = useState('');
-    const [approx_duration, setApproxDuration] = useState('');
+    const [durationHour, setDurationHour] = useState(0);
+    const [durationMin, setDurationMin] = useState(0);
 
     const handleSubmitRaid = () => {
         const reqBody = {
@@ -25,8 +27,9 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
             raid_name,
             guild_or_discord_name: guild_name,
             start_date_and_time,
-            approx_duration
+            approx_duration: `${durationHour}:${durationMin}:00`
         }
+        console.log(reqBody);
         submitRaid(reqBody)
         setLoading(true)
     }
@@ -37,6 +40,7 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
                 <DialogTitle id="form-dialog-title">{'Add Raid'.toUpperCase()}</DialogTitle>
                 <DialogContent>
                     <TextField
+                        className='text-field'
                         autoFocus
                         margin="dense"
                         id="char_name"
@@ -45,6 +49,7 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
                         onChange={(e) => setCharName(e.target.value)}
                     />
                     <TextField
+                        className='text-field'
                         autoFocus
                         margin="dense"
                         id="raid_name"
@@ -53,6 +58,7 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
                         onChange={e => setRaidName(e.target.value)}
                     />
                     <TextField
+                        className='text-field'
                         autoFocus
                         margin="dense"
                         id="guild_name"
@@ -61,6 +67,7 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
                         onChange={e => setGuildName(e.target.value)}
                     />
                     <TextField
+                        className='text-field'
                         id="datetime-local"
                         label="Next appointment"
                         type="datetime-local"
@@ -70,21 +77,34 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
                         }}
                         onChange={e => setStartTime(e.target.value)}
                     />
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="approx_duration"
-                        label="Approx Duration (Mins)"
-                        fullWidth
-                        onChange={e => setApproxDuration(e.target.value)}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleSubmitRaid} color="primary" disabled={!!loading}>
-                        {!!loading ? <><i className="fa fa-spinner fa-spin"/> <span style={{marginLeft: '5px'}}>Submitting...</span></> : 'Submit'}
-                    </Button>
+                    <Select
+                        labelId="duration-hr-label"
+                        id="duration-hr-label"
+                        value={durationHour}
+                        label='Hr'
+                        onChange={(e) => setDurationHour(e.target.value)}
+                    >
+                        {Array(13).fill(0).map((el, i) => <MenuItem key={i} value={i}>{i}</MenuItem>)}
 
-                </DialogActions>
+                    </Select>
+                     <span>:</span>
+                    <Select
+                        labelId="duration-min-label"
+                        id="duration-min-label"
+                        value={durationMin}
+                        label='Min'
+                        onChange={(e) => setDurationMin(e.target.value)}
+                    >
+                        {Array(60).fill(0).map((el, i) => <MenuItem key={i} value={i}>{i}</MenuItem>)}
+
+                    </Select>
+                    <DialogActions>
+                        <Button onClick={handleSubmitRaid} color="primary" variant='contained' disabled={!!loading}>
+                            {!!loading ? <><i className="fa fa-spinner fa-spin"/> <span style={{marginLeft: '5px'}}>Submitting...</span></> : 'Submit'}
+                        </Button>
+                    </DialogActions>
+                </DialogContent>
+
             </Dialog>
         </div>
     );

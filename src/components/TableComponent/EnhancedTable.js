@@ -22,6 +22,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import axios from "axios";
 import {WOW_GET_RAIDS_URL} from "../../util/StringUtil";
+import {displayTime} from "../../util/CommonUtil";
 
 function createData(
     char_name,
@@ -180,7 +181,7 @@ const EnhancedTableToolbar = (props) => {
                 </Typography>
             ) : (
                 <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-                    Nutrition
+                    Raids
                 </Typography>
             )}
 
@@ -341,9 +342,9 @@ export default function EnhancedTable({user, rows}) {
                                             </TableCell>
                                             <TableCell align="right">{row.raid_name}</TableCell>
                                             <TableCell align="right">{row.guild_or_discord_name}</TableCell>
-                                            <TableCell align="right">{row.start_date_and_time}</TableCell>
+                                            <TableCell align="right">{displayTime(row.start_date_and_time)}</TableCell>
                                             <TableCell align="right">{row.approx_duration}</TableCell>
-                                            <TableCell align="right">{row.approx_end}</TableCell>
+                                            <TableCell align="right">{displayTime(row.approx_end)}</TableCell>
                                         </TableRow>
                                     );
                                 })}

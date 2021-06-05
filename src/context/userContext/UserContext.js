@@ -2,7 +2,7 @@ import React, {useContext, useReducer} from "react";
 import {useHistory} from 'react-router-dom';
 import userReducer from "./userReducer";
 import axios from 'axios'
-import {LOGIN, SIGNUP, SUCCESS, WOW_BASE_URL, WOW_LOGIN_URL, WOW_SIGNUP_URL} from "../../util/StringUtil";
+import {ADD_USER, SUCCESS, USER_DATA, WOW_BASE_URL, WOW_LOGIN_URL, WOW_SIGNUP_URL} from "../../util/StringUtil";
 
 const initState = {
     user: null,
@@ -19,10 +19,12 @@ const UserProvider = ({children}) => {
 
     const login = async (user) => {
         const reqBody = {user_id: user.userName, user_pw: user.password};
-        return await axios.post(WOW_LOGIN_URL, reqBody).then(res=>{
+        return await axios.post(WOW_LOGIN_URL, reqBody).then(res=> {
             console.log(res.data)
+            const userData = JSON.parse(res.data.data);
             if (res.data.status === SUCCESS) {
-                dispatch({type: LOGIN, payload: JSON.parse(res.data.data)});
+                localStorage.setItem(USER_DATA, JSON.stringify(userData));
+                dispatch({type: ADD_USER, payload: userData});
                 return Promise.resolve(true);
             } else {
                 return Promise.resolve(false);
@@ -32,10 +34,12 @@ const UserProvider = ({children}) => {
 
     const signup = async (user) => {
         const reqBody = {user_id: user.userName, user_pw: user.password};
-        return await axios.post(WOW_SIGNUP_URL, reqBody).then(res=>{
+        return await axios.post(WOW_SIGNUP_URL, reqBody).then(res=> {
             console.log(res.data)
+            const userData = JSON.parse(res.data.data);
             if (res.data.status === SUCCESS) {
-                dispatch({type: SIGNUP, payload: JSON.parse(res.data.data)});
+                localStorage.setItem(USER_DATA, JSON.stringify(userData));
+                dispatch({type: ADD_USER, payload: userData});
                 return Promise.resolve(true);
             } else {
                 return Promise.resolve(false);
@@ -45,6 +49,14 @@ const UserProvider = ({children}) => {
 
     const logout = () => {
         dispatch({type: 'LOGOUT'})
+        localStorage.removeItem(USER_DATA)
+    }
+
+    const addUser = async (userData) => {
+        console.log('ADD user calling', userData)
+        dispatch({type: ADD_USER, payload: userData});
+        console.log(state.user);
+        return Promise.resolve(true);
     }
 
     return (
@@ -53,7 +65,8 @@ const UserProvider = ({children}) => {
             ...state,
             login,
             logout,
-            signup
+            signup,
+            addUser
         }}
         >{children}</UserContext.Provider>
     )

@@ -75,7 +75,7 @@ const Home = () => {
 
     return (
         <div style={{background: '#fefefe'}}>
-            <AppBar position="static">
+            <AppBar position="fixed">
                 <Toolbar>
                     <Typography variant="h6" className={classes.title}>
                         {user.user_id}
@@ -86,7 +86,7 @@ const Home = () => {
             <Backdrop className={classes.backdrop} open={openLoaderBackdrop}>
                 <CircularProgress color="inherit" />
             </Backdrop>
-            <div style={{padding: '50px'}}>
+            <div style={{padding: '100px'}}>
                 <Button color="primary" variant='contained' onClick={handleClickOpen}>Add Raids</Button>
                 <EnhancedTable user={user} rows={rows}/>
             </div>

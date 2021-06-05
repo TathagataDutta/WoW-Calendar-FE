@@ -7,6 +7,7 @@ export const WOW_GET_RAIDS_URL = WOW_BASE_URL + 'fetch_raids/';
 export const SUCCESS = 'success';
 export const FAILED = 'failed';
 
-export const LOGIN = 'LOGIN';
-export const SIGNUP = 'SIGNUP';
+export const ADD_USER = 'ADD_USER';
 export const LOGOUT = 'LOGOUT';
+
+export const USER_DATA = 'userData';

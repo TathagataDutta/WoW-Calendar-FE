@@ -1,11 +1,8 @@
-import {LOGIN, LOGOUT, SIGNUP} from "../../util/StringUtil";
+import {ADD_USER, LOGOUT} from "../../util/StringUtil";
 
 const userReducer = (state, action) => {
     switch (action.type) {
-        case LOGIN:
-            return {...state, user: action.payload}
-
-        case SIGNUP:
+        case ADD_USER:
             return {...state, user: action.payload}
 
         case LOGOUT:
