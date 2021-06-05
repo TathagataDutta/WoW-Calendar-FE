@@ -37,8 +37,15 @@ const Home = () => {
 
 
     const handleLogout = () => {
-        logout();
-        history.push('/');
+        setOpenLoaderBackDrop(true);
+        setTimeout(() => {
+            logout().then(res => {
+
+            }).finally(() => {
+                setOpenLoaderBackDrop(false);
+                history.push('/');
+            });
+        }, 1000);
     }
 
     const [openModal, setOpenModal] = useState(false);

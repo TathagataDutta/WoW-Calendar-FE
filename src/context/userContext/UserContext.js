@@ -45,9 +45,10 @@ const UserProvider = ({children}) => {
         })
     }
 
-    const logout = () => {
+    const logout = async () => {
         dispatch({type: 'LOGOUT'})
         localStorage.removeItem(USER_DATA)
+        return Promise.resolve(true)
     }
 
     const addUser = async (userData) => {
