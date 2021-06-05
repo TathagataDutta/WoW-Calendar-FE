@@ -11,6 +11,8 @@ import {useUserContext} from "../../context/userContext/UserContext";
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
+import BackdropComponent from "../BackdropComponent/BackdropComponent";
+
 const Alert = (props) => {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -27,6 +29,8 @@ const AuthComponent = () => {
     const [open, setOpen] = useState(false);
 
     const [isLoading, setLoading] = useState(false);
+
+    const [snackMsg, setSnackMsg] = useState('');
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -55,7 +59,12 @@ const AuthComponent = () => {
                     history.push('/home');
                 } else {
                     setOpen(true);
+                    setSnackMsg('Wrong Credentials !!!')
                 }
+            }).catch((err) => {
+                setLoading(false)
+                setOpen(true)
+                setSnackMsg('Internet Error !!!')
             });
         }
     }
@@ -67,6 +76,10 @@ const AuthComponent = () => {
                 setLoading(false)
                 history.push('/home');
 
+            }).catch((err) => {
+                setLoading(false)
+                setOpen(true)
+                setSnackMsg('Internet Error !!!')
             });
         }
     }
@@ -120,12 +133,13 @@ const AuthComponent = () => {
                         </form>
                     </div>
                 </Paper>
+                <BackdropComponent isOpen={isLoading} />
                 <Snackbar
                     open={open}
                     autoHideDuration={3000}
                     onClose={handleClose}>
                     <Alert onClose={handleClose} severity="warning">
-                        Wrong Credentials!!
+                        {snackMsg}
                     </Alert>
                 </Snackbar>
             </div>

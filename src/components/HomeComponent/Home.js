@@ -10,7 +10,7 @@ import EnhancedTable from "../TableComponent/EnhancedTable";
 import AddRaid from "../RaidModalComponent/AddRaid";
 import axios from "axios";
 import {WOW_GET_RAIDS_URL, WOW_RAID_ADD_URL} from "../../util/StringUtil";
-import {Backdrop, CircularProgress} from "@material-ui/core";
+import BackdropComponent from "../BackdropComponent/BackdropComponent";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -81,9 +81,7 @@ const Home = () => {
                     <Button color="inherit" onClick={handleLogout}>Logout</Button>
                 </Toolbar>
             </AppBar>
-            <Backdrop className={classes.backdrop} open={openLoaderBackdrop}>
-                <CircularProgress color="inherit" />
-            </Backdrop>
+            <BackdropComponent isOpen={openLoaderBackdrop} />
             <div style={{padding: '100px'}}>
                 <Button color="primary" style={{marginBottom: '40px'}} variant='contained' onClick={handleClickOpen}>Add Raid</Button>
                 <EnhancedTable user={user} rows={rows}/>

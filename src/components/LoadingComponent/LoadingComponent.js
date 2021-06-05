@@ -4,18 +4,11 @@ import {useEffect} from "react";
 import {useUserContext} from "../../context/userContext/UserContext";
 import {USER_DATA} from "../../util/StringUtil";
 import {useHistory} from "react-router-dom";
+import BackdropComponent from "../BackdropComponent/BackdropComponent";
 
-
-const useStyles = makeStyles((theme) => ({
-    backdrop: {
-        zIndex: theme.zIndex.drawer + 1,
-        color: '#fff',
-    },
-}));
 
 const LoadingComponent = () => {
 
-    const classes = useStyles();
     const {addUser} = useUserContext();
     const history = useHistory();
 
@@ -32,9 +25,7 @@ const LoadingComponent = () => {
         }
     }, [])
 
-    return <Backdrop className={classes.backdrop} open={true}>
-        <CircularProgress color="inherit" />
-    </Backdrop>
+    return <BackdropComponent isOpen={true} />
 }
 
 export default LoadingComponent
