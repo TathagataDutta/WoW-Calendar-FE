@@ -20,6 +20,9 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import {displayTime} from "../../util/CommonUtil";
 import {withStyles} from "@material-ui/core";
 import AlertComponent from "../Alert/AlertComponent";
+import axios from "axios";
+import {WOW_DELETE_RAID_URL} from "../../util/StringUtil";
+import SnackbarComponent from "../SnackbarComponent/SnackbarComponent";
 
 function createData(
     char_name,
@@ -248,6 +251,10 @@ export default function EnhancedTable({user, rows, setRows}) {
     const [rowToBeDeleted, setRowToBeDeleted] = React.useState(null);
     const [alertBackDrop, setAlertBackDrop] = React.useState(false);
 
+    const [isSnackOpen, setSnackOpen] = React.useState(false);
+    const [snackMsg, setSnackMsg] = React.useState('Nothing');
+    const [severity, setSeverity] = React.useState('success');
+
 
 
     const handleRequestSort = (event, property) => {
@@ -298,6 +305,12 @@ export default function EnhancedTable({user, rows, setRows}) {
         setDense(event.target.checked);
     };
 
+    const openSnackbar = (isOpen, msg, severity) => {
+        setSnackOpen(isOpen)
+        setSnackMsg(msg)
+        setSeverity(severity)
+    }
+
     const isSelected = (name) => selected.indexOf(name) !== -1;
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
@@ -331,6 +344,7 @@ export default function EnhancedTable({user, rows, setRows}) {
 
                                     return (
                                         <StyledTableRow
+                                            className={row.char_name.includes('ing') ? 'red-color' : ''}
                                             hover
                                             onClick={(event) => {/*handleClick(event, row)*/}}
                                             role="checkbox"
@@ -385,21 +399,28 @@ export default function EnhancedTable({user, rows, setRows}) {
             <AlertComponent open={openAlert}
                             msg={`Do you want to delete the raid: ${rowToBeDeleted?.raid_name} ?`}
                             openBackDrop={alertBackDrop}
-                            setOpen={setOpenAlert} handleAction={(e) => {
-                console.log(e, rowToBeDeleted)
+                            setOpen={setOpenAlert} handleAction={(action) => {
                 setAlertBackDrop(true)
 
-                if (!!e) {
-                    setTimeout(() => {
-                        setOpenAlert(false)
+                if (!!action) {
+                    axios.delete(WOW_DELETE_RAID_URL+rowToBeDeleted._id).then(res => {
+                        if (!!res) {
+                            setRows([...rows.filter(row => row._id !== rowToBeDeleted._id)])
+                            setOpenAlert(false)
+                            setAlertBackDrop(false)
+                            openSnackbar(true, 'Raid Deleted Successfully', 'success');
+                        }
+                    }).catch(res => {
+                        console.log(res)
                         setAlertBackDrop(false)
-                        setRows([...rows.filter(row => row.raid_name !== rowToBeDeleted.raid_name)])
-                    }, 3000)
+                        openSnackbar(true, 'Raid Delete failed', 'error');
+                    })
                 } else {
                     setOpenAlert(false)
                     setAlertBackDrop(false)
                 }
             }} />
+            <SnackbarComponent open={isSnackOpen} snackMsg={snackMsg} setOpen={setSnackOpen} severity={severity} />
         </div>
     );
 }

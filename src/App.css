@@ -49,3 +49,7 @@ body {
   margin-bottom: 30px;
   border-bottom: 1px solid #efefef;
 }
+
+.red-color {
+  background: #db8866;
+}

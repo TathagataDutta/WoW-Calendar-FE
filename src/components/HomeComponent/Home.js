@@ -1,6 +1,6 @@
 import {useHistory} from 'react-router-dom';
 import {useUserContext} from "../../context/userContext/UserContext";
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -11,6 +11,7 @@ import AddRaid from "../RaidModalComponent/AddRaid";
 import axios from "axios";
 import {WOW_GET_RAIDS_URL, WOW_RAID_ADD_URL} from "../../util/StringUtil";
 import BackdropComponent from "../BackdropComponent/BackdropComponent";
+import SnackbarComponent from "../SnackbarComponent/SnackbarComponent";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,6 +36,16 @@ const Home = () => {
     const history = useHistory();
     const [rows, setRows] = useState([]);
 
+    //modal variables
+    const [openModal, setOpenModal] = useState(false);
+    const [raidSubmitLoading, setRaidSubmitLoading] = useState(false);
+    const [openLoaderBackdrop, setOpenLoaderBackDrop] = useState(false);
+
+    //snackbar variables
+    const [isSnackOpen, setSnackOpen] = React.useState(false);
+    const [snackMsg, setSnackMsg] = React.useState('Nothing');
+    const [severity, setSeverity] = React.useState('success');
+
 
     const handleLogout = () => {
         setOpenLoaderBackDrop(true);
@@ -48,24 +59,28 @@ const Home = () => {
         }, 1000);
     }
 
-    const [openModal, setOpenModal] = useState(false);
-    const [raidSubmitLoading, setRaidSubmitLoading] = useState(false);
-    const [openLoaderBackdrop, setOpenLoaderBackDrop] = useState(false);
-
 
     const handleClickOpen = () => {
         setOpenModal(true);
     };
 
 
+    const openSnackbar = (isOpen, msg, severity) => {
+        setSnackOpen(isOpen)
+        setSnackMsg(msg)
+        setSeverity(severity)
+    }
+
+
     const handleSubmitRaid = (reqBody) => {
+        setRaidSubmitLoading(true)
+        setOpenLoaderBackDrop(true)
         axios.post(WOW_RAID_ADD_URL, reqBody).then(res => {
             console.log(res);
-            setRaidSubmitLoading(true)
-            setOpenLoaderBackDrop(true)
         }).finally(() => {
             setOpenModal(false)
             setRaidSubmitLoading(false)
+            openSnackbar(true, 'Raid Added Successfully', 'success')
         })
     }
 
@@ -101,6 +116,7 @@ const Home = () => {
                 submitRaid={handleSubmitRaid}
                 loading={raidSubmitLoading}
                 setLoading={setRaidSubmitLoading} />
+            <SnackbarComponent open={isSnackOpen} snackMsg={snackMsg} setOpen={setSnackOpen} severity={severity} />
         </div>
     )
 }
