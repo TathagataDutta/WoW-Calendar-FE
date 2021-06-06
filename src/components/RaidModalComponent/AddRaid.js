@@ -29,7 +29,6 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
             start_date_and_time,
             approx_duration: `${durationHour}:${durationMin}:00`
         }
-        console.log(reqBody);
         submitRaid(reqBody)
         setLoading(true)
     }

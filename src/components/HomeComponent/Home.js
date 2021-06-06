@@ -75,7 +75,6 @@ const Home = () => {
     const handleSubmitRaid = (reqBody) => {
         setRaidSubmitLoading(true)
         axios.post(WOW_RAID_ADD_URL, reqBody).then(res => {
-            console.log(res);
         }).finally(() => {
             setOpenModal(false)
             setRaidSubmitLoading(false)

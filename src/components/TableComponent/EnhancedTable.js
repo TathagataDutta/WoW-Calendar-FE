@@ -288,7 +288,6 @@ export default function EnhancedTable({user, rows, setRows, onDeleteRow}) {
                 selected.slice(selectedIndex + 1),
             );
         }
-        console.log(row)
         setSelected(newSelected);
     };
 
@@ -412,7 +411,6 @@ export default function EnhancedTable({user, rows, setRows, onDeleteRow}) {
                             onDeleteRow(true)
                         }
                     }).catch(res => {
-                        console.log(res)
                         setAlertBackDrop(false)
                         openSnackbar(true, 'Raid Delete failed, Network Error!!!', 'error');
                     })
