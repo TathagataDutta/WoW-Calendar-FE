@@ -239,7 +239,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function EnhancedTable({user, rows, setRows}) {
+export default function EnhancedTable({user, rows, setRows, onDeleteRow}) {
     const classes = useStyles();
     const [order, setOrder] = React.useState('desc');
     const [orderBy, setOrderBy] = React.useState('start_date_and_time');
@@ -409,6 +409,7 @@ export default function EnhancedTable({user, rows, setRows}) {
                             setOpenAlert(false)
                             setAlertBackDrop(false)
                             openSnackbar(true, 'Raid Deleted Successfully', 'success');
+                            onDeleteRow(true)
                         }
                     }).catch(res => {
                         console.log(res)

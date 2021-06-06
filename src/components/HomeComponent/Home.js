@@ -84,13 +84,17 @@ const Home = () => {
     }
 
     useEffect(() => {
+        fetchRaids()
+    }, [raidSubmitLoading]);
+
+    const fetchRaids = () => {
         setOpenLoaderBackDrop(true)
         axios.get(WOW_GET_RAIDS_URL + user.user_id).then(res => {
             setRows(res.data);
         }).finally(() => {
             setOpenLoaderBackDrop(false)
         })
-    }, [raidSubmitLoading]);
+    }
 
     return (
         <div>
@@ -105,7 +109,7 @@ const Home = () => {
             <BackdropComponent isOpen={openLoaderBackdrop} />
             <div style={{padding: '100px'}}>
                 <Button color="primary" style={{marginBottom: '40px'}} variant='contained' onClick={handleClickOpen}>Add Raid</Button>
-                <EnhancedTable user={user} rows={rows} setRows={setRows}/>
+                <EnhancedTable user={user} rows={rows} setRows={setRows} onDeleteRow={() => fetchRaids()}/>
             </div>
 
             <AddRaid
