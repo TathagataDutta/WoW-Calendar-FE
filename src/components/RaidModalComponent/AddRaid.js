@@ -53,15 +53,6 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
                         fullWidth
                         onChange={(e) => setCharName(e.target.value)}
                     />
-                    {/*<TextField
-                        className='text-field'
-                        autoFocus
-                        margin="dense"
-                        id="raid_name"
-                        label="Raid Name"
-                        fullWidth
-                        onChange={e => setRaidName(e.target.value)}
-                    />*/}
                     <Select
                         labelId="raid_name"
                         id="raid_name"
@@ -69,6 +60,7 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
                         onChange={(e) => setRaidName(e.target.value)}
                         fullWidth
                     >
+                        <MenuItem key={-1} value={RAID_NAME} disabled>{RAID_NAME}</MenuItem>
                         {getRaids().map((raid, i) => <MenuItem key={i} value={raid}>{raid}</MenuItem>)}
 
 

@@ -413,7 +413,7 @@ export default function EnhancedTable({user, rows, setRows}) {
                     }).catch(res => {
                         console.log(res)
                         setAlertBackDrop(false)
-                        openSnackbar(true, 'Raid Delete failed', 'error');
+                        openSnackbar(true, 'Raid Delete failed, Network Error!!!', 'error');
                     })
                 } else {
                     setOpenAlert(false)

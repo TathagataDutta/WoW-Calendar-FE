@@ -9,5 +9,15 @@ export const displayTime = (dateTime) => {
 }
 
 export const getRaids = () => {
-    return [RAID_NAME, 'Raid 1', 'Raid 2', 'Raid 3', 'Raid 4'];
+    return [
+        "Karazhan",
+        "Magtheridon's Lair",
+        "Gruul's Lair",
+        "Serpentshrine Cavern",
+        "Tempest Keep",
+        "Hyjal Summit",
+        "Black Temple",
+        "Zul'Aman",
+        "Sunwell Plateau"
+    ];
 }

@@ -13,4 +13,4 @@ export const LOGOUT = 'LOGOUT';
 
 export const USER_DATA = 'userData';
 
-export const RAID_NAME = 'Raid Name';
+export const RAID_NAME = 'SELECT-RAID';
