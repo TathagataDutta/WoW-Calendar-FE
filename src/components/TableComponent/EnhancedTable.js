@@ -87,9 +87,9 @@ const headCells = [
     { id: 'char_name', numeric: false, disablePadding: false, label: 'Character Name' },
     { id: 'raid_name', numeric: true, disablePadding: false, label: 'Raid Name' },
     { id: 'guild_or_discord_name', numeric: true, disablePadding: false, label: 'Guild/Discord Name' },
-    { id: 'start_date_and_time', numeric: true, disablePadding: false, label: 'Start Time' },
-    { id: 'approx_duration', numeric: true, disablePadding: false, label: 'Duration (approx.) (Hr.)' },
-    { id: 'approx_end', numeric: true, disablePadding: false, label: 'End Time (Approx)' },
+    { id: 'start_date_and_time', numeric: true, disablePadding: false, label: 'Raid Start Time' },
+    { id: 'approx_duration', numeric: true, disablePadding: false, label: 'Duration (Approx) (Hr.)' },
+    { id: 'approx_end', numeric: true, disablePadding: false, label: 'Raid End Time (Approx)' },
 ];
 
 const StyledTableRow = withStyles((theme) => ({
@@ -241,8 +241,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EnhancedTable({user, rows, setRows}) {
     const classes = useStyles();
-    const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('calories');
+    const [order, setOrder] = React.useState('desc');
+    const [orderBy, setOrderBy] = React.useState('start_date_and_time');
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
@@ -344,7 +344,7 @@ export default function EnhancedTable({user, rows, setRows}) {
 
                                     return (
                                         <StyledTableRow
-                                            className={row.char_name.includes('ing') ? 'red-color' : ''}
+                                            className={!!row.highlight ? 'red-color' : ''}
                                             hover
                                             onClick={(event) => {/*handleClick(event, row)*/}}
                                             role="checkbox"
@@ -359,7 +359,7 @@ export default function EnhancedTable({user, rows, setRows}) {
                                                     inputProps={{ 'aria-labelledby': labelId }}
                                                 />
                                             </TableCell>*/}
-                                            <TableCell component="th" id={labelId} scope="row" >
+                                            <TableCell align='left'>
                                                 {row.char_name}
                                             </TableCell>
                                             <TableCell align="right">{row.raid_name}</TableCell>

@@ -8,6 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {InputLabel, MenuItem, Select} from "@material-ui/core";
 import {getRaids} from "../../util/CommonUtil";
 import {RAID_NAME} from "../../util/StringUtil";
+import BackdropComponent from "../BackdropComponent/BackdropComponent";
 
 const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading}) => {
 
@@ -37,11 +38,28 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
         return !!loading
             || !!(durationHour === -1 || durationMin === -1 )
             || raid_name === RAID_NAME
+            || !char_name
+            || !guild_name
+            || !start_date_and_time
+    }
+
+    const resetFields = () => {
+        setCharName('')
+        setRaidName(RAID_NAME)
+        setGuildName('')
+        setStartTime('')
+        setDurationHour(-1)
+        setDurationMin(-1)
+    }
+
+    const handleModalClose = () => {
+        resetFields()
+        setOpen(false)
     }
 
     return (
         <div>
-            <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="form-dialog-title">
+            <Dialog open={open} onClose={handleModalClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">{'Add Raid'.toUpperCase()}</DialogTitle>
                 <DialogContent>
                     <TextField
@@ -92,7 +110,10 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
                         id="duration-hr-label"
                         value={durationHour}
                         label='Hr'
-                        onChange={(e) => setDurationHour(e.target.value)}
+                        onChange={(e) => {
+                            setDurationHour(e.target.value)
+                            if (durationMin === -1) setDurationMin(0);
+                        }}
                     >
                         <MenuItem key='-1' value={-1}>Hr</MenuItem>
                         {Array(13).fill(0).map((el, i) => <MenuItem key={i} value={i}>{i}</MenuItem>)}
@@ -104,7 +125,10 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
                         id="duration-min-label"
                         value={durationMin}
                         label='Min'
-                        onChange={(e) => setDurationMin(e.target.value)}
+                        onChange={(e) => {
+                            setDurationMin(e.target.value)
+                            if (durationHour === -1) setDurationHour(0)
+                        }}
                     >
                         <MenuItem key='-1' value={-1}>Min</MenuItem>
                         {Array(60).fill(0).map((el, i) => <MenuItem key={i} value={i}>{i}</MenuItem>)}
@@ -116,6 +140,7 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
                         </Button>
                     </DialogActions>
                 </DialogContent>
+                <BackdropComponent isOpen={loading} />
             </Dialog>
         </div>
     );
