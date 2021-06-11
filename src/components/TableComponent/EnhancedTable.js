@@ -366,17 +366,17 @@ export default function EnhancedTable({user, rows, setRows, onDeleteRow, onRowSe
                                             <TableCell align="right">{row.approx_duration.slice(0, -3)}</TableCell>
                                             <TableCell align="right">{displayTime(row.approx_end)}</TableCell>
                                             <TableCell align="right">
-                                                <IconButton size='small' aria-label="delete" color='primary' onClick={() => {
+                                                <IconButton size='small' style={{marginRight: "10px"}} aria-label="delete" color='primary' onClick={() => {
                                                     setRowToBeSelected(row)
                                                     onRowSelect(row)
                                                 }}>
-                                                    <EditIcon />
+                                                    <EditIcon fontSize="small" />
                                                 </IconButton>
                                                 <IconButton size='small' aria-label="delete" color='secondary' onClick={() => {
                                                     setRowToBeSelected(row)
                                                     setOpenAlert(true)
                                                 }}>
-                                                    <DeleteIcon />
+                                                    <DeleteIcon fontSize="small" />
                                                 </IconButton>
                                             </TableCell>
                                         </StyledTableRow>
