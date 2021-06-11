@@ -36,6 +36,7 @@ const AddRaid = ({open, setOpen, user, submitRaid, updateRaid, loading = false, 
 
     const handleSubmitRaid = () => {
         const reqBody = {
+            _id: initValues._id,
             user_id: user.user_id,
             char_name,
             raid_name,

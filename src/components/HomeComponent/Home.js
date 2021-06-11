@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import EnhancedTable from "../TableComponent/EnhancedTable";
 import AddRaid from "../RaidModalComponent/AddRaid";
 import axios from "axios";
-import {WOW_GET_RAIDS_URL, WOW_RAID_ADD_URL} from "../../util/StringUtil";
+import {WOW_EDIT_RAID_URL, WOW_GET_RAIDS_URL, WOW_RAID_ADD_URL} from "../../util/StringUtil";
 import BackdropComponent from "../BackdropComponent/BackdropComponent";
 import SnackbarComponent from "../SnackbarComponent/SnackbarComponent";
 
@@ -75,8 +75,8 @@ const Home = () => {
 
     const callSubmitRaidApi = async (reqBody) => {
         if (!!initValues) {
-            console.log('updating raid!!!')
-            return await Promise.resolve();
+            console.log('updating raid!!!', reqBody._id)
+            return await axios.put(WOW_EDIT_RAID_URL+reqBody._id, reqBody);
         } else {
             return await axios.post(WOW_RAID_ADD_URL, reqBody)
         }

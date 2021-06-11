@@ -85,7 +85,7 @@ function stableSort(array, comparator) {
 const headCells = [
     { id: 'char_name', numeric: false, disablePadding: false, label: 'Character Name' },
     { id: 'raid_name', numeric: true, disablePadding: false, label: 'Raid Name' },
-    { id: 'guild_or_discord_name', numeric: true, disablePadding: false, label: 'Guild/Discord Name' },
+    { id: 'guild_or_discord_name', numeric: true, disablePadding: false, label: 'Guild / Discord Name' },
     { id: 'start_date_and_time', numeric: true, disablePadding: false, label: 'Raid Start Time' },
     { id: 'approx_duration', numeric: true, disablePadding: false, label: 'Duration (Approx) (Hr.)' },
     { id: 'approx_end', numeric: true, disablePadding: false, label: 'Raid End Time (Approx)' },
