@@ -40,7 +40,7 @@ const InfoModal = ({open, setOpen}) => {
                         ref={descriptionElementRef}
                         tabIndex={-1}
                     >
-                        {[...new Array(50)]
+                        {[...new Array(8)]
                             .map(
                                 () => `Cras mattis consectetur purus sit amet fermentum.
 Cras justo odio, dapibus ac facilisis in, egestas eget quam.
@@ -51,7 +51,7 @@ Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
                     </DialogContentText>
                 </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleModalClose} color="primary" variant='contained'>
+                        <Button onClick={handleModalClose} color="primary">
                             Close
                         </Button>
                     </DialogActions>

@@ -36,7 +36,7 @@ const AddRaid = ({open, setOpen, user, submitRaid, updateRaid, loading = false, 
 
     const handleSubmitRaid = () => {
         const reqBody = {
-            _id: initValues._id,
+            _id: initValues?._id,
             user_id: user.user_id,
             char_name,
             raid_name,
@@ -152,7 +152,7 @@ const AddRaid = ({open, setOpen, user, submitRaid, updateRaid, loading = false, 
 
                     </Select>
                     <DialogActions>
-                        <Button onClick={handleSubmitRaid} color="primary" variant='contained' disabled={isButtonDisabled()}>
+                        <Button onClick={handleSubmitRaid} color="primary" disabled={isButtonDisabled()}>
                             {!!loading ? <><i className="fa fa-spinner fa-spin"/> <span style={{marginLeft: '5px'}}>{!!initValues ? 'Updating' : 'Submitting...'}</span></> : (!!initValues ? 'Update' : 'Submit')}
                         </Button>
                     </DialogActions>
