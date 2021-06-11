@@ -22,6 +22,7 @@ import AlertComponent from "../Alert/AlertComponent";
 import axios from "axios";
 import {WOW_DELETE_RAID_URL} from "../../util/StringUtil";
 import SnackbarComponent from "../SnackbarComponent/SnackbarComponent";
+import TableChartIcon from '@material-ui/icons/TableChart';
 
 /*function createData(
     char_name,
@@ -181,6 +182,7 @@ const EnhancedTableToolbar = ({ numSelected, rows }) => {
                 [classes.highlight]: numSelected > 0,
             })}
         >
+            <div className="card-label"><TableChartIcon /></div>
             {numSelected > 0 ? (
                 <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
                     {numSelected} selected
@@ -243,7 +245,7 @@ export default function EnhancedTable({user, rows, setRows, onDeleteRow, onRowSe
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rowsPerPage, setRowsPerPage] = React.useState(8);
     const [openAlert, setOpenAlert] = React.useState(false);
     const [rowToBeSelected, setRowToBeSelected] = React.useState(null);
     const [alertBackDrop, setAlertBackDrop] = React.useState(false);
@@ -389,7 +391,7 @@ export default function EnhancedTable({user, rows, setRows, onDeleteRow, onRowSe
                     </Table>
                 </TableContainer>
                 <TablePagination
-                    rowsPerPageOptions={[10, 20, 30]}
+                    rowsPerPageOptions={[8, 10, 20, 30]}
                     component="div"
                     count={rows.length}
                     rowsPerPage={rowsPerPage}

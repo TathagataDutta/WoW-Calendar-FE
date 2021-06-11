@@ -13,7 +13,6 @@ import {WOW_EDIT_RAID_URL, WOW_GET_RAIDS_URL, WOW_RAID_ADD_URL} from "../../util
 import BackdropComponent from "../BackdropComponent/BackdropComponent";
 import SnackbarComponent from "../SnackbarComponent/SnackbarComponent";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import {IconButton} from "@material-ui/core";
 import AddIcon from '@material-ui/icons/Add';
 import InfoIcon from '@material-ui/icons/Info';
 import InfoModal from "../InfoModal/InfoModal";
@@ -128,7 +127,7 @@ const Home = () => {
             </AppBar>
             <BackdropComponent isOpen={openLoaderBackdrop} />
             <div style={{padding: '100px'}}>
-                <div style={{display: "flex", justifyContent: "space-between"}}>
+                <div style={{display: "flex", justifyContent: "space-between", marginBottom: '20px'}}>
                     <Button color="primary" style={{marginBottom: '40px'}} variant='contained' onClick={handleOpenAddRaidModal}>
                         <AddIcon /> <span style={{marginLeft: '0.5rem'}}>Add Raid</span>
                     </Button>
