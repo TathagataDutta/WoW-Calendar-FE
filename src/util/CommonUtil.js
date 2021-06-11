@@ -1,4 +1,3 @@
-import {RAID_NAME} from "./StringUtil";
 
 export const displayTime = (dateTime) => {
     const date = new Date(dateTime)

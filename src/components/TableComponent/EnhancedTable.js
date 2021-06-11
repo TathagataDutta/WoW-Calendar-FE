@@ -14,9 +14,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import EditIcon from '@material-ui/icons/Edit';
 import {displayTime} from "../../util/CommonUtil";
 import {withStyles} from "@material-ui/core";
 import AlertComponent from "../Alert/AlertComponent";
@@ -24,7 +23,7 @@ import axios from "axios";
 import {WOW_DELETE_RAID_URL} from "../../util/StringUtil";
 import SnackbarComponent from "../SnackbarComponent/SnackbarComponent";
 
-function createData(
+/*function createData(
     char_name,
     raid_name,
     guild_or_discord_name,
@@ -39,7 +38,7 @@ function createData(
         approx_duration,
         approx_end
     };
-}
+}*/
 
 /*const rows = [
     createData('Cupcake', 305, 3.7, 67, 4.3),
@@ -100,8 +99,7 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-function EnhancedTableHead(props) {
-    const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+function EnhancedTableHead({ classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort }) {
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
@@ -174,9 +172,8 @@ const useToolbarStyles = makeStyles((theme) => ({
     },
 }));
 
-const EnhancedTableToolbar = (props) => {
+const EnhancedTableToolbar = ({ numSelected, rows }) => {
     const classes = useToolbarStyles();
-    const { numSelected, rows } = props;
 
     return (
         <Toolbar
@@ -239,7 +236,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function EnhancedTable({user, rows, setRows, onDeleteRow}) {
+export default function EnhancedTable({user, rows, setRows, onDeleteRow, onRowSelect}) {
     const classes = useStyles();
     const [order, setOrder] = React.useState('desc');
     const [orderBy, setOrderBy] = React.useState('start_date_and_time');
@@ -248,7 +245,7 @@ export default function EnhancedTable({user, rows, setRows, onDeleteRow}) {
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [openAlert, setOpenAlert] = React.useState(false);
-    const [rowToBeDeleted, setRowToBeDeleted] = React.useState(null);
+    const [rowToBeSelected, setRowToBeSelected] = React.useState(null);
     const [alertBackDrop, setAlertBackDrop] = React.useState(false);
 
     const [isSnackOpen, setSnackOpen] = React.useState(false);
@@ -272,7 +269,7 @@ export default function EnhancedTable({user, rows, setRows, onDeleteRow}) {
         setSelected([]);
     };
 
-    const handleClick = (event, row) => {
+/*    const handleClick = (event, row) => {
         const selectedIndex = selected.indexOf(row.char_name);
         let newSelected = [];
 
@@ -289,7 +286,7 @@ export default function EnhancedTable({user, rows, setRows, onDeleteRow}) {
             );
         }
         setSelected(newSelected);
-    };
+    };*/
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -300,9 +297,9 @@ export default function EnhancedTable({user, rows, setRows, onDeleteRow}) {
         setPage(0);
     };
 
-    const handleChangeDense = (event) => {
+    /*const handleChangeDense = (event) => {
         setDense(event.target.checked);
-    };
+    };*/
 
     const openSnackbar = (isOpen, msg, severity) => {
         setSnackOpen(isOpen)
@@ -367,8 +364,14 @@ export default function EnhancedTable({user, rows, setRows, onDeleteRow}) {
                                             <TableCell align="right">{row.approx_duration.slice(0, -3)}</TableCell>
                                             <TableCell align="right">{displayTime(row.approx_end)}</TableCell>
                                             <TableCell align="right">
+                                                <IconButton size='small' aria-label="delete" color='primary' onClick={() => {
+                                                    setRowToBeSelected(row)
+                                                    onRowSelect(row)
+                                                }}>
+                                                    <EditIcon />
+                                                </IconButton>
                                                 <IconButton size='small' aria-label="delete" color='secondary' onClick={() => {
-                                                    setRowToBeDeleted(row)
+                                                    setRowToBeSelected(row)
                                                     setOpenAlert(true)
                                                 }}>
                                                     <DeleteIcon />
@@ -396,15 +399,15 @@ export default function EnhancedTable({user, rows, setRows, onDeleteRow}) {
                 />
             </Paper>
             <AlertComponent open={openAlert}
-                            msg={`Do you want to delete the raid: ${rowToBeDeleted?.raid_name} ?`}
+                            msg={`Do you want to delete the raid: ${rowToBeSelected?.raid_name} ?`}
                             openBackDrop={alertBackDrop}
                             setOpen={setOpenAlert} handleAction={(action) => {
                 setAlertBackDrop(true)
 
                 if (!!action) {
-                    axios.delete(WOW_DELETE_RAID_URL+rowToBeDeleted._id).then(res => {
+                    axios.delete(WOW_DELETE_RAID_URL+rowToBeSelected._id).then(res => {
                         if (!!res) {
-                            setRows([...rows.filter(row => row._id !== rowToBeDeleted._id)])
+                            setRows([...rows.filter(row => row._id !== rowToBeSelected._id)])
                             setOpenAlert(false)
                             setAlertBackDrop(false)
                             openSnackbar(true, 'Raid Deleted Successfully', 'success');

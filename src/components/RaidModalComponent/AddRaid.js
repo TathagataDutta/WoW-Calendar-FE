@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -10,7 +10,7 @@ import {getRaids} from "../../util/CommonUtil";
 import {RAID_NAME} from "../../util/StringUtil";
 import BackdropComponent from "../BackdropComponent/BackdropComponent";
 
-const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading}) => {
+const AddRaid = ({open, setOpen, user, submitRaid, updateRaid, loading = false, setLoading, initValues, setInitValues}) => {
 
 
     const [char_name, setCharName] = useState('');
@@ -19,6 +19,20 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
     const [start_date_and_time, setStartTime] = useState('');
     const [durationHour, setDurationHour] = useState(-1);
     const [durationMin, setDurationMin] = useState(-1);
+
+    useEffect(() => {
+
+        if (!!initValues) {
+            setCharName(initValues.char_name)
+            setRaidName(initValues.raid_name)
+            setGuildName(initValues.guild_or_discord_name)
+            setStartTime(initValues.start_date_and_time)
+            setDurationHour(Number(initValues.approx_duration.slice(0, 1)))
+            setDurationMin(Number(initValues.approx_duration.slice(2, 4)))
+        } else {
+            resetFields()
+        }
+    }, [initValues])
 
     const handleSubmitRaid = () => {
         const reqBody = {
@@ -49,6 +63,8 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
         setStartTime('')
         setDurationHour(-1)
         setDurationMin(-1)
+
+        setInitValues(null)
     }
 
     const handleModalClose = () => {
@@ -59,7 +75,7 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
     return (
         <div>
             <Dialog open={open} onClose={handleModalClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">{'Add Raid'.toUpperCase()}</DialogTitle>
+                <DialogTitle id="form-dialog-title">{(!!initValues ? 'Edit Raid' : 'Add Raid').toUpperCase()}</DialogTitle>
                 <DialogContent>
                     <TextField
                         className='text-field'
@@ -68,6 +84,7 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
                         id="char_name"
                         label="Character Name"
                         fullWidth
+                        value={char_name}
                         onChange={(e) => setCharName(e.target.value)}
                     />
                     <Select
@@ -85,11 +102,11 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
 
                     <TextField
                         className='text-field'
-                        autoFocus
                         margin="dense"
                         id="guild_name"
                         label="Guild or Discord Name"
                         fullWidth
+                        value={guild_name}
                         onChange={e => setGuildName(e.target.value)}
                     />
                     <TextField
@@ -97,7 +114,7 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
                         id="datetime-local"
                         label="Raid Start Time"
                         type="datetime-local"
-                        defaultValue={new Date().toISOString()}
+                        defaultValue={start_date_and_time}
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -135,7 +152,7 @@ const AddRaid = ({open, setOpen, user, submitRaid, loading = false, setLoading})
                     </Select>
                     <DialogActions>
                         <Button onClick={handleSubmitRaid} color="primary" variant='contained' disabled={isButtonDisabled()}>
-                            {!!loading ? <><i className="fa fa-spinner fa-spin"/> <span style={{marginLeft: '5px'}}>Submitting...</span></> : 'Submit'}
+                            {!!loading ? <><i className="fa fa-spinner fa-spin"/> <span style={{marginLeft: '5px'}}>{!!initValues ? 'Updating' : 'Submitting...'}</span></> : (!!initValues ? 'Update' : 'Submit')}
                         </Button>
                     </DialogActions>
                 </DialogContent>

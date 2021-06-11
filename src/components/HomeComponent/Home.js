@@ -45,6 +45,7 @@ const Home = () => {
     const [isSnackOpen, setSnackOpen] = React.useState(false);
     const [snackMsg, setSnackMsg] = React.useState('Nothing');
     const [severity, setSeverity] = React.useState('success');
+    const [initValues, setInitValues] = useState(null);
 
 
     const handleLogout = () => {
@@ -61,6 +62,7 @@ const Home = () => {
 
 
     const handleClickOpen = () => {
+        setInitValues(null)
         setOpenModal(true);
     };
 
@@ -71,14 +73,24 @@ const Home = () => {
         setSeverity(severity)
     }
 
+    const callSubmitRaidApi = async (reqBody) => {
+        if (!!initValues) {
+            console.log('updating raid!!!')
+            return await Promise.resolve();
+        } else {
+            return await axios.post(WOW_RAID_ADD_URL, reqBody)
+        }
+    }
 
     const handleSubmitRaid = (reqBody) => {
         setRaidSubmitLoading(true)
-        axios.post(WOW_RAID_ADD_URL, reqBody).then(res => {
+        callSubmitRaidApi(reqBody).then(res => {
         }).finally(() => {
+            const snackMsg = `Raid ${!!initValues ? 'Updated' : 'Added'} Successfully`
             setOpenModal(false)
             setRaidSubmitLoading(false)
-            openSnackbar(true, 'Raid Added Successfully', 'success')
+            setInitValues(null)
+            openSnackbar(true, snackMsg, 'success')
         })
     }
 
@@ -108,7 +120,15 @@ const Home = () => {
             <BackdropComponent isOpen={openLoaderBackdrop} />
             <div style={{padding: '100px'}}>
                 <Button color="primary" style={{marginBottom: '40px'}} variant='contained' onClick={handleClickOpen}>Add Raid</Button>
-                <EnhancedTable user={user} rows={rows} setRows={setRows} onDeleteRow={() => fetchRaids()}/>
+                <EnhancedTable
+                    user={user}
+                    rows={rows}
+                    setRows={setRows}
+                    onRowSelect={(row) => {
+                        setInitValues(row)
+                        setOpenModal(true)
+                    }}
+                   onDeleteRow={() => fetchRaids()}/>
             </div>
 
             <AddRaid
@@ -116,6 +136,8 @@ const Home = () => {
                 setOpen={setOpenModal}
                 user={user}
                 submitRaid={handleSubmitRaid}
+                initValues={initValues}
+                setInitValues={setInitValues}
                 loading={raidSubmitLoading}
                 setLoading={setRaidSubmitLoading} />
             <SnackbarComponent open={isSnackOpen} snackMsg={snackMsg} setOpen={setSnackOpen} severity={severity} />

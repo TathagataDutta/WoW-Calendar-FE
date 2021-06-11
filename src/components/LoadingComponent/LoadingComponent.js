@@ -1,5 +1,3 @@
-import {Backdrop, CircularProgress} from "@material-ui/core";
-import {makeStyles} from "@material-ui/core/styles";
 import {useEffect} from "react";
 import {useUserContext} from "../../context/userContext/UserContext";
 import {USER_DATA} from "../../util/StringUtil";
