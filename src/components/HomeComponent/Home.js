@@ -12,6 +12,11 @@ import axios from "axios";
 import {WOW_EDIT_RAID_URL, WOW_GET_RAIDS_URL, WOW_RAID_ADD_URL} from "../../util/StringUtil";
 import BackdropComponent from "../BackdropComponent/BackdropComponent";
 import SnackbarComponent from "../SnackbarComponent/SnackbarComponent";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import {IconButton} from "@material-ui/core";
+import AddIcon from '@material-ui/icons/Add';
+import InfoIcon from '@material-ui/icons/Info';
+import InfoModal from "../InfoModal/InfoModal";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -47,6 +52,8 @@ const Home = () => {
     const [severity, setSeverity] = React.useState('success');
     const [initValues, setInitValues] = useState(null);
 
+    const [openInfoModal, setOpenInfoModal] = useState(false);
+
 
     const handleLogout = () => {
         setOpenLoaderBackDrop(true);
@@ -61,7 +68,7 @@ const Home = () => {
     }
 
 
-    const handleClickOpen = () => {
+    const handleOpenAddRaidModal = () => {
         setInitValues(null)
         setOpenModal(true);
     };
@@ -111,15 +118,24 @@ const Home = () => {
         <div>
             <AppBar position="fixed">
                 <Toolbar>
-                    <Typography variant="h6" className={classes.title}>
-                        {user.user_id}
+                    <Typography variant="subtitle1" className={classes.title}>
+                        Hello, {user.user_id}
                     </Typography>
-                    <Button color="inherit" onClick={handleLogout}>Logout</Button>
+                    <Button color="inherit" size="small" aria-label="logout" onClick={handleLogout}>
+                        <span style={{marginRight: '0.5rem'}}>Logout</span> <ExitToAppIcon />
+                    </Button>
                 </Toolbar>
             </AppBar>
             <BackdropComponent isOpen={openLoaderBackdrop} />
             <div style={{padding: '100px'}}>
-                <Button color="primary" style={{marginBottom: '40px'}} variant='contained' onClick={handleClickOpen}>Add Raid</Button>
+                <div style={{display: "flex", justifyContent: "space-between"}}>
+                    <Button color="primary" style={{marginBottom: '40px'}} variant='contained' onClick={handleOpenAddRaidModal}>
+                        <AddIcon /> <span style={{marginLeft: '0.5rem'}}>Add Raid</span>
+                    </Button>
+                    <Button color="primary" style={{marginBottom: '40px'}} variant='contained' onClick={() => setOpenInfoModal(true)}>
+                        <InfoIcon /> <span style={{marginLeft: '0.5rem'}}>Info</span>
+                    </Button>
+                </div>
                 <EnhancedTable
                     user={user}
                     rows={rows}
@@ -140,6 +156,10 @@ const Home = () => {
                 setInitValues={setInitValues}
                 loading={raidSubmitLoading}
                 setLoading={setRaidSubmitLoading} />
+            <InfoModal
+                open={openInfoModal}
+                setOpen={setOpenInfoModal}
+                />
             <SnackbarComponent open={isSnackOpen} snackMsg={snackMsg} setOpen={setSnackOpen} severity={severity} />
         </div>
     )
