@@ -55,17 +55,7 @@ const Home = () => {
     const [openInfoModal, setOpenInfoModal] = useState(false);
 
 
-    const handleLogout = () => {
-        setOpenLoaderBackDrop(true);
-        setTimeout(() => {
-            logout().then(res => {
 
-            }).finally(() => {
-                setOpenLoaderBackDrop(false);
-                history.push('/');
-            });
-        }, 1000);
-    }
 
 
     const handleOpenAddRaidModal = () => {
@@ -116,16 +106,6 @@ const Home = () => {
 
     return (
         <div>
-            <AppBar position="fixed">
-                <Toolbar>
-                    <Typography variant="subtitle1" className={classes.title}>
-                        Hello, {user.user_id}
-                    </Typography>
-                    <Button color="inherit" size="small" aria-label="logout" onClick={handleLogout}>
-                        <span style={{marginRight: '0.5rem'}}>Logout</span> <ExitToAppIcon />
-                    </Button>
-                </Toolbar>
-            </AppBar>
             <BackdropComponent isOpen={openLoaderBackdrop} />
             <div style={{padding: '100px'}}>
                 <div style={{display: "flex", justifyContent: "flex-end", marginBottom: '20px'}}>

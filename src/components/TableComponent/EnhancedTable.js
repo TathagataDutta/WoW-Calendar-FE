@@ -173,7 +173,7 @@ const useToolbarStyles = makeStyles((theme) => ({
     },
 }));
 
-const EnhancedTableToolbar = ({ numSelected, rows }) => {
+const EnhancedTableToolbar = ({ numSelected, rows, user }) => {
     const classes = useToolbarStyles();
 
     return (
@@ -189,7 +189,7 @@ const EnhancedTableToolbar = ({ numSelected, rows }) => {
                 </Typography>
             ) : (
                 <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-                    Raids
+                    Raid Schedule
                 </Typography>
             )}
 
@@ -316,7 +316,7 @@ export default function EnhancedTable({user, rows, setRows, onDeleteRow, onRowSe
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
-                <EnhancedTableToolbar numSelected={selected.length} rows={selected}  />
+                <EnhancedTableToolbar numSelected={selected.length} rows={selected} user={user}  />
                 <TableContainer>
                     <Table
                         className={classes.table}

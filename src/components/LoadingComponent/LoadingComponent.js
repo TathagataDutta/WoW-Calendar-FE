@@ -1,6 +1,6 @@
 import {useEffect} from "react";
 import {useUserContext} from "../../context/userContext/UserContext";
-import {USER_DATA} from "../../util/StringUtil";
+import {AUTH_ROUTE, DASHBOARD_ROUTE, USER_DATA} from "../../util/StringUtil";
 import {useHistory} from "react-router-dom";
 import BackdropComponent from "../BackdropComponent/BackdropComponent";
 
@@ -15,11 +15,11 @@ const LoadingComponent = () => {
         if (!!userDataString) {
             const userData = JSON.parse(userDataString);
             addUser(userData).then(res => {
-                history.push('/home')
+                history.push(DASHBOARD_ROUTE)
             })
         } else {
             console.log('else part');
-            history.push('/auth');
+            history.push(AUTH_ROUTE);
         }
     }, [])
 

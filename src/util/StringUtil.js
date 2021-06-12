@@ -15,3 +15,7 @@ export const LOGOUT = 'LOGOUT';
 export const USER_DATA = 'userData';
 
 export const RAID_NAME = 'SELECT-RAID';
+
+export const DASHBOARD_ROUTE = '/dashboard';
+export const AUTH_ROUTE = '/auth';
+export const SETTINGS_ROUTE = '/settings';
