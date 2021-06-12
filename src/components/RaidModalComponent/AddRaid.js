@@ -91,6 +91,7 @@ const AddRaid = ({open, setOpen, user, submitRaid, updateRaid, loading = false, 
                     <Select
                         labelId="raid_name"
                         id="raid_name"
+                        className="text-field"
                         value={raid_name}
                         onChange={(e) => setRaidName(e.target.value)}
                         fullWidth
@@ -121,36 +122,42 @@ const AddRaid = ({open, setOpen, user, submitRaid, updateRaid, loading = false, 
                         }}
                         onChange={e => setStartTime(e.target.value)}
                     />
-                    <InputLabel id="demo-simple-select-label">Raid Duration</InputLabel>
-                    <Select
-                        labelId="duration-hr-label"
-                        id="duration-hr-label"
-                        value={durationHour}
-                        label='Hr'
-                        onChange={(e) => {
-                            setDurationHour(e.target.value)
-                            if (durationMin === -1) setDurationMin(0);
-                        }}
-                    >
-                        <MenuItem key='-1' value={-1}>Hr</MenuItem>
-                        {Array(13).fill(0).map((el, i) => <MenuItem key={i} value={i}>{i}</MenuItem>)}
+                    <div style={{display: "flex", flexDirection: "column"}}>
+                        <InputLabel id="demo-simple-select-label">Raid Duration</InputLabel>
+                        <div className="select-container" style={{display: "flex", justifyContent: "flex-start", alignItems: "flex-start"}}>
+                            <Select
+                                labelId="duration-hr-label"
+                                id="duration-hr-label"
+                                className="text-field"
+                                value={durationHour}
+                                label='Hr'
+                                onChange={(e) => {
+                                    setDurationHour(e.target.value)
+                                    if (durationMin === -1) setDurationMin(0);
+                                }}
+                            >
+                                <MenuItem key='-1' value={-1}>Hr</MenuItem>
+                                {Array(13).fill(0).map((el, i) => <MenuItem key={i} value={i}>{i}</MenuItem>)}
 
-                    </Select>
-                     <span style={{marginLeft: '10px', marginRight: '10px'}}>:</span>
-                    <Select
-                        labelId="duration-min-label"
-                        id="duration-min-label"
-                        value={durationMin}
-                        label='Min'
-                        onChange={(e) => {
-                            setDurationMin(e.target.value)
-                            if (durationHour === -1) setDurationHour(0)
-                        }}
-                    >
-                        <MenuItem key='-1' value={-1}>Min</MenuItem>
-                        {Array(60).fill(0).map((el, i) => <MenuItem key={i} value={i}>{i}</MenuItem>)}
+                            </Select>
+                            <span  style={{marginLeft: '10px', marginRight: '10px'}}>:</span>
+                            <Select
+                                labelId="duration-min-label"
+                                id="duration-min-label"
+                                className="text-field"
+                                value={durationMin}
+                                label='Min'
+                                onChange={(e) => {
+                                    setDurationMin(e.target.value)
+                                    if (durationHour === -1) setDurationHour(0)
+                                }}
+                            >
+                                <MenuItem key='-1' value={-1}>Min</MenuItem>
+                                {Array(60).fill(0).map((el, i) => <MenuItem key={i} value={i}>{i}</MenuItem>)}
 
-                    </Select>
+                            </Select>
+                        </div>
+                    </div>
                     <DialogActions>
                         <Button onClick={handleSubmitRaid} color="primary" disabled={isButtonDisabled()}>
                             {!!loading ? <><i className="fa fa-spinner fa-spin"/> <span style={{marginLeft: '5px'}}>{!!initValues ? 'Updating' : 'Submitting...'}</span></> : (!!initValues ? 'Update' : 'Submit')}
