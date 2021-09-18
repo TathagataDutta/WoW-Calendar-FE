@@ -1,4 +1,5 @@
-export const WOW_BASE_URL = 'https://wc-be-test.appspot.com/';
+/*export const WOW_BASE_URL = 'https://wc-be-test.appspot.com/';*/
+export const WOW_BASE_URL = 'https://wow-calendar-api.herokuapp.com/';
 export const WOW_LOGIN_URL = WOW_BASE_URL + 'user_login/';
 export const WOW_SIGNUP_URL = WOW_BASE_URL + 'user_signup/';
 export const WOW_RAID_ADD_URL = WOW_BASE_URL + 'raid_signup/';

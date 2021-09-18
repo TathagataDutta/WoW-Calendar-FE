@@ -48,7 +48,7 @@ const App = () => {
 
             }).finally(() => {
                 setOpenLoaderBackDrop(false);
-                history.push('/');
+                window.location.reload();
             });
         }, 1000);
     }

@@ -109,10 +109,10 @@ const Home = () => {
             <BackdropComponent isOpen={openLoaderBackdrop} />
             <div style={{padding: '100px'}}>
                 <div style={{display: "flex", justifyContent: "flex-end", marginBottom: '20px'}}>
-                    <Fab  size="medium" color="secondary" variant="outlined" style={{marginRight: '10px'}} onClick={() => setOpenInfoModal(true)}>
+                    <Fab  size="medium" color="secondary" variant="extended" style={{marginRight: '10px'}} onClick={() => setOpenInfoModal(true)}>
                         <InfoIcon /> <span style={{marginLeft: '0.5rem'}}>Info</span>
                     </Fab>
-                    <Fab size="medium" color="primary" variant='contained' onClick={handleOpenAddRaidModal}>
+                    <Fab size="medium" color="primary" variant='extended' onClick={handleOpenAddRaidModal}>
                         <AddIcon /> <span style={{marginLeft: '0.5rem'}}>Add Raid</span>
                     </Fab>
                 </div>
