@@ -240,12 +240,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EnhancedTable({user, rows, setRows, onDeleteRow, onRowSelect}) {
     const classes = useStyles();
-    const [order, setOrder] = React.useState('desc');
+    const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('start_date_and_time');
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(8);
+    const [rowsPerPage, setRowsPerPage] = React.useState(20);
     const [openAlert, setOpenAlert] = React.useState(false);
     const [rowToBeSelected, setRowToBeSelected] = React.useState(null);
     const [alertBackDrop, setAlertBackDrop] = React.useState(false);
@@ -329,7 +329,7 @@ export default function EnhancedTable({user, rows, setRows, onDeleteRow, onRowSe
                                             role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
-                                            key={row.char_name}
+                                            key={index}
                                             selected={isItemSelected}
                                         >
                                             {/*<TableCell padding="checkbox">
